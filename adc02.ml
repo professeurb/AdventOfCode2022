@@ -1,51 +1,15 @@
 #require "Brulib"
 
 open Brulib
-module Stream = Brustream
 
 (* let file = "test02.txt" *)
 let file = "input02.txt"
-
-type coup = Pierre | Papier | Ciseaux
-
-let bat = function
-  | Pierre -> Ciseaux
-  | Papier -> Pierre
-  | Ciseaux -> Papier
-;;
-
-let score_coup = function
-  | Pierre -> 1
-  | Papier -> 2
-  | Ciseaux -> 3
-;;
-
-let coup_elfe = function
-  | 'A' -> Pierre
-  | 'B' -> Papier
-  | 'C' -> Ciseaux
-  | _ -> failwith "Wrong"
-;;
-
-let coup_moi = function
-  | 'X' -> Pierre
-  | 'Y' -> Papier
-  | 'Z' -> Ciseaux
-  | _ -> failwith "Wrong"
-;;
-
-let lire_coup s = (coup_elfe s.[0], coup_moi s.[2])
-
-let score_round (a, b) =
-  score_coup b
-  + if a = b then 3 else if a = bat b then 6 else 0
-;;
+let decode s = (Char.code s.[0] - Char.code 'A', Char.code s.[2] - Char.code 'X')
+let score_round_1 (a, b) = b + 1 + (3 * ((4 + b - a) mod 3))
+let score_round_2 (a, r) = ((a + 2 + r) mod 3) + 1 + (3 * r)
 
 let _ =
-  let data = Stream.(of_file file |> map lire_coup) in
-  let score = ref 0 in
-  Stream.iter
-    (fun c -> score := !score + score_round c)
-    data;
-  Printf.printf "Part One : %d\n" !score
-;;
+  Printf.printf "Part One : %d\n"
+    Gen.(of_file file |> map decode |> fold (fun s c -> s + score_round_1 c) 0);
+  Printf.printf "Part One : %d\n"
+    Gen.(of_file file |> map decode |> fold (fun s c -> s + score_round_2 c) 0)
