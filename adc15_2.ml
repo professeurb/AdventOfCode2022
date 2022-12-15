@@ -4,7 +4,6 @@ open Brulib
 
 (* let file, line, maxi = ("test15.txt", 10, 20) *)
 let file, line, maxi = ("input15.txt", 2000000, 4000000)
-let snoc a b = b :: a
 
 let get_data file =
   let process_data xs ys xb yb = (xs, ys, xb, yb) in
@@ -42,11 +41,9 @@ let rec part_two = function
 
 let _ =
   let ss, bs = get_data file in
-  let line_data = process_line ss line in
   Printf.printf "Part One: %d\n"
-    (List.fold_left
-       (fun s (a, b) -> s + b - a + 1)
-       0 line_data
+    ((process_line ss line
+     |> List.fold_left (fun s (a, b) -> s + b - a + 1) 0)
     - List.fold_left
         (fun s (_, y) -> if y = line then s + 1 else s)
         0 bs);
