@@ -36,6 +36,11 @@ def get_monkeys():
             cnt += 1
 
 
+"""
+monkeys = list(get_monkeys())
+print(monkeys)
+scores = [0] * len(monkeys)
+
 for rnd in range(1, 21):
     print("Round", rnd)
     for i in range(len(monkeys)):
