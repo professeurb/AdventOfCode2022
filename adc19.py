@@ -2,7 +2,6 @@ class Tester:
     def __init__(self, costs, maxtime):
         self.costs = costs
         self.maxgeode = 0
-        self.best = None
         self.states = set()
         self.maxrobots = [max(cost[i] for cost in self.costs)
                           for i in range(len(costs))]
@@ -23,8 +22,7 @@ class Tester:
             expect = items[3] + robots[3] * (self.maxtime - t)
             if expect > self.maxgeode:
                 self.maxgeode = expect
-                self.best = state
-        for i in range(len(self.costs) - 1, -1, -1):
+        for i in range(4):
             cost = self.costs[i]
             if (all(cost[j] == 0 or robots[j] > 0 for j in range(4)) and
                     (robots[i] < self.maxrobots[i])):
@@ -59,7 +57,6 @@ with open(file, "r") as data:
         costs[2] = (int(stuff[18]), int(stuff[21]), 0, 0)
         costs[3] = (int(stuff[27]), 0, int(stuff[30]), 0)
         score = Tester(costs, maxtime).check()
-        # print(i, "*", score, "=", i * score)
         sum += i * score
     print("Part One:", sum)
 
