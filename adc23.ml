@@ -118,6 +118,7 @@ let _ =
     (((ymax - ymin + 1) * (xmax - xmin + 1))
     - Hashset.length final_map);
   print_map final_map;
+  (* Part Two *)
   let rec aux2 m c =
     match one_round m with
     | None -> c
